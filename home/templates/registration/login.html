@@ -1,0 +1,44 @@
+{% extends 'base_menu.html' %}
+
+{% block content %}
+<div class="container" >
+    <div style="max-width: 500px;">
+        <h4 style="margin-top: 1em;">Login page</h4>
+        <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <p style="color:crimson;"><strong>Your username and password didn't match. Please try again.</strong></p>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }} 
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <input type="submit" class="btn btn-primary" value="Login" />
+            <a href="{% url 'home:registration' %}" class="btn btn-info">Registration</a>
+            {% if form.errors %}
+                <a href="#" class="btn btn-ligth">Reset password</a>
+            {% endif %}
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+<!-- <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" id="exampleInputPassword1">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button> -->
+

@@ -1,0 +1,29 @@
+{% extends 'base_menu.html' %}
+
+{% block content %}
+<div class="container" >
+    <div style="max-width: 500px;">
+        <h4 style="margin-top: 1em;">Login page</h4>
+        <form method="POST">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <p style="color:crimson;"><strong>Your username and password didn't match. Please try again.</strong></p>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.errors }}
+                    {{ field.label_tag }} {{ field }} 
+                    {% if field.help_text %}
+                        <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <input type="submit" class="btn btn-primary" value="Submit" />
+            <a href="{% url 'shop:product-list' %}" class="ml-2 btn btn-info">Cancel</a>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
+</div>
+{% endblock %}

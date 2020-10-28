@@ -1,0 +1,17 @@
+{% extends 'base_menu.html' %}
+
+{% load static %}
+{% block content %}
+    <div class="container mt-4">
+        <h3>{{ word.word }} <small><i>({{ word.level.level }})</i></small></h3>
+        <p>{{ word.ru1 }} / {{ word.ru2 }}</p>
+        {% if word.audio %}
+            <audio id="audio" src="{% static 'vocabulary/audio/'|add:word.audio %}"></audio>
+            <div>
+                <h4><a href="" onclick="document.getElementById('audio').play(); return false;"><i class="fa fa-volume-up"></i></button></h4>
+            </div>
+        {% else %}
+            <p style="color:gray;">- No audio -</p>
+        {% endif %}
+    </div>
+{% endblock %}
