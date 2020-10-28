@@ -21,7 +21,7 @@
                 </div>
             {% endfor %}
             <input type="submit" class="btn btn-primary" value="Submit" />
-            <a href="{% url 'shop:product-list' %}" class="ml-2 btn btn-info">Cancel</a>
+            <a href="{% url 'home:index' %}" class="ml-2 btn btn-info">Cancel</a>
             <input type="hidden" name="next" value="{{ next }}" />
         </form>
     </div>
