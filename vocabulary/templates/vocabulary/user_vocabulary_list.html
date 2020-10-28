@@ -1,0 +1,13 @@
+{% extends 'base_menu.html' %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h3>Your vocabularies:</h3>
+        
+        <ul>{% for vocabulary in vocabulary_list %}
+            <li><a href="{% url 'vocabulary:user-vocabulary-detail' vocabulary.id %}">
+                <strong>{{ vocabulary.title }}</strong> <i>({{ vocabulary.get_words_str }})</i>
+            </a></li>
+        {% endfor %}</ul>
+    </div>
+{% endblock %}

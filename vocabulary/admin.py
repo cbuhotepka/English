@@ -16,4 +16,7 @@ class WordVocabularyInline(admin.TabularInline):
 
 @admin.register(UserVocabulary)
 class UserVocabulary(admin.ModelAdmin):
+    list_display = ['id', 'title', 'user', 'get_words_str']
     inlines = (WordVocabularyInline,)
+
+    

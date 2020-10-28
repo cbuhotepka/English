@@ -21,7 +21,6 @@ class Word(models.Model):
     def __str__(self):
         return f"{self.word.upper()}:  {self.ru1} / {self.ru2}"
 
-
 class UserVocabulary(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=256)
@@ -32,6 +31,14 @@ class UserVocabulary(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.user.username})"
+
+    def get_words_str(self):
+        words = self.word.all()[:6].values_list('word', flat=True)
+        if len(words) == 6:
+            return ', '.join(words[:5])+'...'
+        else:
+            return ', '.join(words)
+    get_words_str.short_description = 'Words'
 
 class WordVocabulary(models.Model):
     vocabulary = models.ForeignKey(UserVocabulary, on_delete=models.CASCADE)

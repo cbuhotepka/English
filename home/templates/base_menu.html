@@ -14,7 +14,26 @@
                 <li class="nav-item active">
                   <a class="nav-link" href="{% url 'vocabulary:word-list' %}">Words<span class="sr-only">(current)</span></a>
                 </li>
-              </ul>  
+
+                {% if user.is_authenticated %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'vocabulary:user-vocabulary-list' %}">Vocabularies<span class="sr-only">(current)</span></a>
+                </li>{% endif %}
+
+                <!-- Dropdown LEVELS NAVIGATION -->
+                {% load vocabulary_tags %}
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Levels
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    {% all_levels as levels %}
+                    {% for level in levels %}
+                      <a class="dropdown-item" href="{% url 'vocabulary:level' level.level %}">{{ level.level }}</a>
+                    {% endfor %}
+                  </div>
+                </li>
+              </ul>
 
               <!-- LOGIN -->
               {% if user.is_authenticated %}

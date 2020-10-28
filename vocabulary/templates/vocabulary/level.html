@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="container mt-4">
-        <h3>50 random words:</h3>
+        <h3>50 random {{ level }} words:</h3>
         
         <ul>{% for word in word_list %}
             <li><a href="{% url 'vocabulary:word-detail' word.word %}">
