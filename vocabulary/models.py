@@ -45,5 +45,8 @@ class WordVocabulary(models.Model):
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
     stage = models.PositiveIntegerField(default=0)
 
+    class Meta:
+        unique_together = ('vocabulary', 'word')
+
     def __str__(self):
         return f"{self.word.word} - {self.stage}"

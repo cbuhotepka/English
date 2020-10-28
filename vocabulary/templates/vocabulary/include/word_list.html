@@ -1,0 +1,13 @@
+{% load vocabulary_tags %}
+{% user_vocabulary_set user as vocabulary_list %}
+
+<ul>{% for word in word_list %}
+    <li><a href="{% url 'vocabulary:word-detail' word.word %}">
+        <strong>{{ word.word }}</strong> <i>({{ word.level.level }}) - 
+        {{ word.ru1 }}{% if word.ru2 %} / {{ word.ru2 }}{% endif %}</i></a>
+    
+        {% if user.is_authenticated %}
+            {% include 'vocabulary/include/add_to_vocabulary_dropdown.html' %}
+        {% endif %}
+    </li>
+{% endfor %}</ul>

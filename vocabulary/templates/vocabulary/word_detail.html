@@ -8,12 +8,18 @@
         {% if word.audio %}
             <audio id="audio" src="{% static 'vocabulary/audio/'|add:word.audio %}"></audio>
             <div>
-                <h4><a href="" onclick="document.getElementById('audio').play(); return false;"><i class="fa fa-volume-up"></i></button></h4>
+                <h4><a href="" onclick="document.getElementById('audio').play(); return false;"><i class="fa fa-volume-up"></i></button></a></h4>
             </div>
         {% else %}
             <p style="color:gray;">- No audio -</p>
         {% endif %}
         
+        {% if user.is_authenticated %}
+            {% load vocabulary_tags %}
+            {% user_vocabulary_set user as vocabulary_list %}
+            {% include 'vocabulary/include/add_to_vocabulary_dropdown.html' %}
+        {% endif %}
+
         <script type="text/javascript">
             document.getElementById('audio').play()
         </script>

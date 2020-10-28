@@ -7,8 +7,10 @@ urlpatterns = [
     path('level/<str:lvl>', views.LevelView.as_view(), name='level'),
     path('search', views.SearchView.as_view(), name='search'),
 
-    path('vocabularies', views.UserVocabularyListView.as_view(), name='user-vocabulary-list'),
+    path('user_vocabularies', views.UserVocabularyListView.as_view(), name='user-vocabulary-list'),
     path('user_vocabulary/<int:pk>', views.UserVocabularyDetailView.as_view(), name='user-vocabulary-detail'),
+    path('user_vocabulary/<int:pk>/word_add', views.UserVocabularyAddWord, name='vocabulary-add-word'),
+    path('user_vocabulary/create', views.UserVocabularyCreateView.as_view(), name='vocabulary-create'),
 
     path('word/<str:word>', views.WordDetailView.as_view(), name='word-detail'),
 ]

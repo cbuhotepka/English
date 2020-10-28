@@ -1,0 +1,12 @@
+<div class="dropdown" style="display:inline;">
+    <button class="btn btn-link dropdown-toggle btn-sm" style="color:green;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {% comment %} <i class="fa fa-plus"></i> {% endcomment %}
+        Add to
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {% for vocabulary in vocabulary_list %}
+            <a href="{% url 'vocabulary:vocabulary-add-word' vocabulary.id %}?w_id={{ word.id }}" class="dropdown-item" />
+                {{ vocabulary.title }}</a>
+        {% endfor %}
+    </div>
+</div>

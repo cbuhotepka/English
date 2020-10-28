@@ -1,14 +1,10 @@
 {% extends 'base_menu.html' %}
 
 {% block content %}
+
     <div class="container mt-4">
         <h3>50 random {{ level }} words:</h3>
         
-        <ul>{% for word in word_list %}
-            <li><a href="{% url 'vocabulary:word-detail' word.word %}">
-                <strong>{{ word.word }}</strong> <i>({{ word.level.level }}) - 
-                {{ word.ru1 }}{% if word.ru2 %} / {{ word.ru2 }}{% endif %}</i>
-            </a></li>
-        {% endfor %}</ul>
+        {% include 'vocabulary/include/word_list.html' %}
     </div>
 {% endblock %}

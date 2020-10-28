@@ -1,6 +1,7 @@
 {% extends 'base_menu.html' %}
 
 {% block content %}
+
     <div class="container mt-4">
         <h3>{{ vocabulary.title }}:</h3>
         
@@ -8,9 +9,9 @@
             <li><a href="{% url 'vocabulary:word-detail' word_vocabulary.word.word %}">
                 <strong>{{ word_vocabulary.word.word }}</strong> <i>({{ word_vocabulary.word.level.level }}) - 
                 {{ word_vocabulary.word.ru1 }}
-                {% if word_vocabulary.word.ru2 %} / {{ word_vocabulary.word.ru2 }}{% endif %}</i>
+                {% if word_vocabulary.word.ru2 %} / {{ word_vocabulary.word.ru2 }}{% endif %}</i></a>
                 - stage: {{ word_vocabulary.stage }}
-            </a></li>
+            </li>
         {% endfor %}</ul>
     </div>
 {% endblock %}

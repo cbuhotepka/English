@@ -7,7 +7,9 @@
         <ul>{% for vocabulary in vocabulary_list %}
             <li><a href="{% url 'vocabulary:user-vocabulary-detail' vocabulary.id %}">
                 <strong>{{ vocabulary.title }}</strong> <i>({{ vocabulary.get_words_str }})</i>
+                {{ vocabulary.word_set.all }}
             </a></li>
         {% endfor %}</ul>
+        <a href="{% url 'vocabulary:vocabulary-create' %}" class="btn btn-primary">Create vocabulary</a>
     </div>
 {% endblock %}
