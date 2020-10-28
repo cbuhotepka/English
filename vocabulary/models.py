@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth import User
+from django.conf import settings
 
 # Create your models here.
 class Level(models.Model):
@@ -21,5 +21,22 @@ class Word(models.Model):
     def __str__(self):
         return f"{self.word.upper()}:  {self.ru1} / {self.ru2}"
 
+
 class UserVocabulary(models.Model):
-    pass
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=256)
+    word = models.ManyToManyField(Word, through='WordVocabulary')
+    
+    class Meta:
+        verbose_name_plural = 'UserVocabularies'
+
+    def __str__(self):
+        return f"{self.title} ({self.user.username})"
+
+class WordVocabulary(models.Model):
+    vocabulary = models.ForeignKey(UserVocabulary, on_delete=models.CASCADE)
+    word = models.ForeignKey(Word, on_delete=models.CASCADE)
+    stage = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.word.word} - {self.stage}"
