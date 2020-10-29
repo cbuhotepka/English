@@ -1,8 +1,10 @@
 {% extends 'base_menu.html' %}
 
+{% load static %}
 {% block content %}
 
     <div class="container mt-4">
+        <img src="{% static 'vocabulary/image/vocab/'|add:vocabulary.picture %}" style="max-width:400px; float:right;" />
         <h3>{{ vocabulary.title }}:</h3>
         
         <ul>{% for word_vocabulary in word_vocabulary_list %}
