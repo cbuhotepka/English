@@ -6,7 +6,7 @@ from .views_owner import OwnerCreateView, OwnerDeleteView, OwnerUpdateView
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import UserVocabularyForm
-from .scripts import set_vocabulary_picture
+from .scripts.pictures import set_vocabulary_picture
 
 # Create your views here.
 class WordDetailView(View):

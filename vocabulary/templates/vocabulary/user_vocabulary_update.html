@@ -2,8 +2,8 @@
 
 {% load static %}
 {% block content %}
-    <div class="container mt-4">
-    {% comment %} <img src="{% static 'vocabulary/image/vocab/'|add:vocabulary.picture %}" style="max-width:400px;" /> {% endcomment %}
+    <div class="container mt-4 text-center" style="max-width: 480px;">
+    <img src="{% static 'vocabulary/image/vocab/'|add:object.picture %}" style="width:100%; height:auto;" />
     <h3>Edit vocabulary</h3>
         <form method="POST">
             {% csrf_token %}

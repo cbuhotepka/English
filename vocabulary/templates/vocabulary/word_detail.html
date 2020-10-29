@@ -3,6 +3,14 @@
 {% load static %}
 {% block content %}
     <div class="container mt-4 text-center">
+        <style>
+            img { 
+                filter: blur(15px);
+            }
+            img:hover {
+                filter: blur(0px);
+            }
+        </style>
         <img src="{% static 'vocabulary/image/word/'|add:word.picture %}" style="max-width:400px;" />
         <h3>{{ word.word }} <small><i>({{ word.level.level }})</i></small></h3>
         
