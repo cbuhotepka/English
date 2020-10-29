@@ -38,6 +38,8 @@ def set_vocabulary_picture(vocabulary):
             r_pic = requests.get(pic_url)
             if r_pic.status_code == 200:
                 break
+        else:
+            print(f"--NO PICTURE: {ex} with {vocabulary.title}")
 
         file_name = vocabulary.title.replace(' ', '_').lower() +'.jpg'
         with open(PATH + file_name, 'wb') as f:

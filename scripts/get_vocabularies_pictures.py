@@ -34,8 +34,16 @@ def run():
             r = requests.get(url, headers=HEADERS)
             pics = re.findall(r"(https://image\.shutterstock\.com/.+?\.jpg)", r.content.decode())
             # print(r.content.decode()[:50])
+            
             pics = pics[:20]
-            pic_url = choice(pics)
+            for i in range(20):
+                pic_url = choice(pics)
+                r_pic = requests.get(pic_url)
+                if r_pic.status_code == 200:
+                    break
+            else:
+                print(f"--NO PICTURE: {vocabulary.title}")
+
             print(f"{vocabulary.title}: {pic_url}")
             r_pic = requests.get(pic_url)
 

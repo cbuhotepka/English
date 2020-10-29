@@ -5,3 +5,7 @@ def run():
     for word in word_list:
         if Word.objects.filter(word=word.word).count() > 1:
             print(f"{word.word} - {word.ru1} / {word.ru2}")
+            # word.delete()
+
+    print('== DONE ==')
+    
