@@ -1,5 +1,7 @@
-{% load vocabulary_tags %}
-{% user_vocabulary_set user as vocabulary_list %}
+{% if user.is_authenticated %}
+    {% load vocabulary_tags %}
+    {% user_vocabulary_set user as vocabulary_list %}
+{% endif %}
 
 <ul>{% for word in word_list %}
     <li><a href="{% url 'vocabulary:word-detail' word.word %}">

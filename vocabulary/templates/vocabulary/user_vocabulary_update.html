@@ -2,8 +2,7 @@
 
 {% block content %}
     <div class="container mt-4">
-        {% if create %}<h3>New vocabulary</h3>
-        {% else %}<h3>Edit vocabulary<h3>{% endif %}
+    <h3>Edit vocabulary</h3>
 
         <form method="POST">
             {% csrf_token %}
@@ -18,7 +17,7 @@
                 </div>
             {% endfor %}
 
-            <input type="submit" value="Create" class="btn btn-success"/>
+            <input type="submit" value="Update" class="btn btn-success"/>
             <a href="{% url 'vocabulary:user-vocabulary-list' %}" class="ml-2 btn btn-info">Cancel</a>
         </form>
         
