@@ -25,6 +25,7 @@ class UserVocabulary(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=256)
     word = models.ManyToManyField(Word, through='WordVocabulary')
+    picture = models.CharField(max_length=128, default='__blank__.jpg')
     
     class Meta:
         verbose_name_plural = 'UserVocabularies'

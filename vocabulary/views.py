@@ -6,6 +6,7 @@ from .views_owner import OwnerCreateView, OwnerDeleteView, OwnerUpdateView
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import UserVocabularyForm
+from .scripts import set_vocabulary_picture
 
 # Create your views here.
 class WordDetailView(View):
@@ -70,21 +71,13 @@ class UserVocabularyCreateView(OwnerCreateView):
     success_url = reverse_lazy('vocabulary:user-vocabulary-list')
     template_name = 'vocabulary/user_vocabulary_create.html'
 
-    # def post(self, request):
-    #     form = self.form_class(request.POST)
-    #     if not form.is_valid():
-    #         context = {'form':form}
-    #         return render(request, self.template_name, context)
-
-    #     vocabulary = form.save(commit=False)
-    #     vocabulary.user = self.request.user
-    #     vocabulary.save()
-    #     return redirect(self.success_url)
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['user'] = self.request.user
-    #     return context
-
+    def form_valid(self, form):
+        vocabulary = form.save(commit=False)
+        vocabulary.user = self.request.user
+        vocabulary.save()
+        set_vocabulary_picture(vocabulary)
+        return super().form_valid(form)
+        
 class UserVocabularyUpdateView(OwnerUpdateView):
     form_class = UserVocabularyForm
     model = UserVocabulary

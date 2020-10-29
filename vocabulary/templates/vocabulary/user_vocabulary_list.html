@@ -1,25 +1,52 @@
 {% extends 'base_menu.html' %}
 
+{% load static %}
 {% block content %}
     <div class="container mt-4">
         <h3>Your vocabularies:</h3>
+
+        <div class="row row-cols-1 row-cols-md-4">
+            <style>
+                .card:hover {box-shadow: 0 0 8px rgba(0,50,100,0.5); z-index: 30;}
+                .card-img-top {width: 100%; height: auto; object-fit: cover;}
+            </style>
+
+            {% for vocabulary in vocabulary_list %}
+            <div class="col mb-0" style="padding: 4px;">     
+                <div class="card h-100" onclick="window.location='{% url 'vocabulary:user-vocabulary-detail' vocabulary.id %}'">
+                    <img class="card-img-top" src="{% static 'vocabulary/image/vocab/'|add:vocabulary.picture %}" width="100%" height=auto />
+                    <div class="card-body">
+                        <h5 class="card-title">{{ vocabulary.title }}</h5>
+                        <p class="card-text">{{ product.get_sex_display }}
+                            <i>({{ vocabulary.get_words_str }})</i>
+                            {{ vocabulary.word_set.all }}</a>
+                        </p>
+                        
+                        <a class="btn btn-outline-info btn-sm" href="{% url 'vocabulary:vocabulary-update' vocabulary.id %}"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-outline-info btn-sm" href="{% url 'vocabulary:vocabulary-delete' vocabulary.id %}"><i class="fa fa-trash"></i></a>                        
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <a href="{% url 'vocabulary:vocabulary-create' %}" class="btn btn-primary">
+            Create vocabulary</a>
         
-        <ul class="list-unstyled">
+        {% comment %} <ul class="list-unstyled">
             {% for vocabulary in vocabulary_list %}
             <li class="mb-2">
                 <a href="{% url 'vocabulary:user-vocabulary-detail' vocabulary.id %}" class="btn btn-outline-secondary">
                 <strong>{{ vocabulary.title }}</strong> <i>({{ vocabulary.get_words_str }})</i>
                 {{ vocabulary.word_set.all }}</a>
-                <span style="color:gray;">
                     <a class="btn btn-outline-info" href="{% url 'vocabulary:vocabulary-update' vocabulary.id %}"><i class="fa fa-edit"></i></a>
                     <a class="btn btn-outline-info" href="{% url 'vocabulary:vocabulary-delete' vocabulary.id %}"><i class="fa fa-trash"></i></a>
-                </span>
             </li>{% endfor %}
             <li>
                 <a href="{% url 'vocabulary:vocabulary-create' %}" class="btn btn-primary">
                     Create vocabulary</a>
             </li>
-        </ul>
+        </ul> {% endcomment %}
         
     </div>
 {% endblock %}
