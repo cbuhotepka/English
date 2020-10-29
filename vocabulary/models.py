@@ -34,11 +34,17 @@ class UserVocabulary(models.Model):
         return f"{self.title} ({self.user.username})"
 
     def get_words_str(self):
-        words = self.word.all()[:6].values_list('word', flat=True)
-        if len(words) == 6:
-            return ', '.join(words[:5])+'...'
+        words = [w.word for w in self.word.all()[:6]]
+        # words = Word.objects.all()[:5]
+        print('>>> WORDS:', words)
+        if words and len(words)>0 :
+            # words = words.values_list('word', flat=True)
+            if len(words) == 6:
+                return ', '.join(words[:5])+'...'
+            else:
+                return ', '.join(words)
         else:
-            return ', '.join(words)
+            return ''
     get_words_str.short_description = 'Words'
 
 class WordVocabulary(models.Model):

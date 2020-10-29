@@ -7,8 +7,12 @@ from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import UserVocabularyForm
 from .scripts.pictures import set_vocabulary_picture
+from .scripts.helpers import smart_split
 
 # Create your views here.
+
+# ==================== WORD VIEWS ====================
+
 class WordDetailView(View):
     template_name = 'vocabulary/word_detail.html'
 
@@ -49,11 +53,14 @@ class SearchView(View):
         context = {'search':search, 'word_list':word_list, 'number':len(word_list)}
         return render(request, self.template_name, context)
 
+
+# ==================== VOCABULARY VIEWS ====================
+
 class UserVocabularyListView(LoginRequiredMixin, View):
     template_name = 'vocabulary/user_vocabulary_list.html'
 
     def get(self, request):
-        vocabulary_list = UserVocabulary.objects.filter(user=request.user)
+        vocabulary_list = UserVocabulary.objects.filter(user=request.user).prefetch_related('word')
         context = {'vocabulary_list':vocabulary_list}
         return render(request, self.template_name, context)
 
@@ -88,16 +95,34 @@ class UserVocabularyUpdateView(OwnerUpdateView):
     #     self.object = get_object_or_404(UserVocabulary, pk=pk, user=self.request.user)
     #     return super().get(request, *args, **kwargs)
 
-    # def post(self, request, pk):
-    #     vocabulary = get_object_or_404(UserVocabulary, pk=pk, user=self.request.user)
-    #     form = self.form_class(request.POST, instance=vocabulary)
-    #     if not form.is_valid():
-    #         context = {'form':form}
-    #         return render(request, self.template_name, context)
+    def post(self, request, pk):
+        vocabulary = get_object_or_404(UserVocabulary, pk=pk, user=self.request.user)
 
-    #     vocabulary = form.save(commit=False)
-    #     vocabulary.save()
-    #     return redirect(self.success_url)
+        if 'words' in request.POST:
+            not_found = []
+            for word in smart_split(request.POST['words']):
+                print('=== HERE IS NEW WORD:', word)
+                try:
+                    word = Word.objects.get(word=word)
+                    word_vocabulary, created = WordVocabulary.objects.get_or_create(vocabulary=vocabulary, word=word)
+                except Exception as ex:
+                    print('--- EXCEPTION with:', word, ex)
+                    not_found.append(word)
+            print('--- NOT FOUND:', not_found)
+            return redirect(self.success_url)
+
+        elif 'change_picture' in request.POST:
+            set_vocabulary_picture(vocabulary)
+            return redirect(self.success_url)
+
+        form = self.form_class(request.POST, instance=vocabulary)
+        if not form.is_valid():
+            context = {'form':form}
+            return render(request, self.template_name, context)
+
+        vocabulary = form.save(commit=False)
+        vocabulary.save()
+        return redirect(self.success_url)
 
 class UserVocabularyDeleteView(OwnerDeleteView):
     model = UserVocabulary

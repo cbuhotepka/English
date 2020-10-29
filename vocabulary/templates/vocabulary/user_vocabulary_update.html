@@ -2,25 +2,52 @@
 
 {% load static %}
 {% block content %}
-    <div class="container mt-4 text-center" style="max-width: 480px;">
+<div class="container mt-4" style="max-width: 480px;">
+    <form method="POST">{% csrf_token %}
+        <button type="submit" name="change_picture" class="btn btn-link text-secondary" style="float:right;"/>
+            <small><i class="fa fa-sync"></i></small> Change picture</button>
+    </form>
+    <h3>{{ object.title }}</h3>
+
     <img src="{% static 'vocabulary/image/vocab/'|add:object.picture %}" style="width:100%; height:auto;" />
-    <h3>Edit vocabulary</h3>
+    
+    <h4>Rename vocabulary</h4>
+    <form method="POST">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.errors }}
+                {% comment %} {{ field.label_tag }}  {% endcomment %}
+                {{ field }} 
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <input type="submit" value="Update" class="btn btn-success"/>
+        <a href="{% url 'vocabulary:user-vocabulary-list' %}" class="ml-2 btn btn-info">Cancel</a>
+    </form>
+</div>
+
+<div class="container mt-4" style="max-width: 480px;">
+    <button class="btn btn-link btn-block dropdown-toggle text-left border-0" 
+        style="color:black; padding:0;" 
+        type="button" id="dropdownMenuButton" 
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <h4 style="display:inline;">Add words</h4>
+    </button>
+    <div class="dropdown-menu p-3 border-0" style="width:100%; max-width:480px;" aria-labelledby="dropdownMenuButton">
         <form method="POST">
             {% csrf_token %}
 
-            {% for field in form %}
-                <div class="form-group">
-                    {{ field.errors }}
-                    {{ field.label_tag }} {{ field }} 
-                    {% if field.help_text %}
-                        <small class="form-text text-muted">{{ field.help_text|safe }}</small>
-                    {% endif %}
-                </div>
-            {% endfor %}
+            <div class="form-group">
+                <textarea class="form-control" name="words" rows="6"></textarea>
+            </div>
 
-            <input type="submit" value="Update" class="btn btn-success"/>
-            <a href="{% url 'vocabulary:user-vocabulary-list' %}" class="ml-2 btn btn-info">Cancel</a>
+            <input type="submit" value="Add words" class="btn btn-success"/>
         </form>
-        
-    </div>
+    </div>        
+</div>
 {% endblock %}

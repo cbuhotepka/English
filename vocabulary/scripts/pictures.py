@@ -6,8 +6,7 @@ from time import sleep
 import re
 from random import choice
 
-def set_vocabulary_picture(vocabulary):
-    HEADERS = {
+HEADERS = {
         'accept': 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
         'accept-encoding': 'gzip, deflate, br',
         'accept-language': 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7',
@@ -20,12 +19,12 @@ def set_vocabulary_picture(vocabulary):
         'sec-fetch-site': 'cross-site',
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
     }
+PATH = 'vocabulary\\static\\vocabulary\\image\\vocab\\'
+SRCH_HEAD = 'https://www.shutterstock.com/ru/search/'
+SRCH_TAIL = '?orientation=horizontal&image_type=photo'
 
-    PATH = 'vocabulary\\static\\vocabulary\\image\\vocab\\'
-    SRCH_HEAD = 'https://www.shutterstock.com/ru/search/'
-    SRCH_TAIL = '?orientation=horizontal&image_type=photo'
+def set_vocabulary_picture(vocabulary):
     i=0
-    
     try:
         url = SRCH_HEAD + vocabulary.title +SRCH_TAIL
         r = requests.get(url, headers=HEADERS)

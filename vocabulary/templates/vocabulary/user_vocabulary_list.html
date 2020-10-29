@@ -14,8 +14,8 @@
             {% for vocabulary in vocabulary_list %}
             <div class="col mb-0" style="padding: 4px;">     
                 <div class="card h-100" onclick="window.location='{% url 'vocabulary:user-vocabulary-detail' vocabulary.id %}'">
-                    <div class="bg-secondary" style="
-                        background-image: url('{% static 'vocabulary/image/vocab/'|add:vocabulary.picture %}'); 
+                    <div class="bg-secondary" style=
+                        "background-image: url('{% static 'vocabulary/image/vocab/'|add:vocabulary.picture %}'); 
                         height:200px; 
                         background-position:top;
                         background-size:auto 212px;">
@@ -35,8 +35,6 @@
             </div>
             {% endfor %}
             <div class="col mb-0" style="padding: 4px;">
-                {% comment %} <a href="{% url 'vocabulary:vocabulary-create' %}" class="card h-100 btn btn-success">
-                    Create vocabulary</a> {% endcomment %}
                 <div class="card h-100 bg-success text-white text-center" 
                     onclick="window.location='{% url 'vocabulary:vocabulary-create' %}'"
                     onmouseover="style='cursor: pointer;'">
