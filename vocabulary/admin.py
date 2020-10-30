@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Word, Level, WordVocabulary, UserVocabulary
+from .models import Word, Level, WordWordset, UserWordset
 
 # Register your models here.
 # admin.site.register(Word)
@@ -9,14 +9,14 @@ admin.site.register(Level)
 class WordAdmin(admin.ModelAdmin):
     model = Word
 
-class WordVocabularyInline(admin.TabularInline):
-    model = WordVocabulary
+class WordWordsetInline(admin.TabularInline):
+    model = WordWordset
     list_display = ['id', 'word', 'stage']
     extra = 1
 
-@admin.register(UserVocabulary)
-class UserVocabulary(admin.ModelAdmin):
+@admin.register(UserWordset)
+class UserWordset(admin.ModelAdmin):
     list_display = ['id', 'title', 'user', 'get_words_str']
-    inlines = (WordVocabularyInline,)
+    inlines = (WordWordsetInline,)
 
     

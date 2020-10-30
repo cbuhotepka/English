@@ -1,0 +1,24 @@
+{% extends 'base_menu.html' %}
+
+{% load static %}
+{% block content %}
+
+    <div class="container mt-4">
+        <img src="{% static 'vocabulary/image/wordset/'|add:wordset.picture %}" style="max-width:400px; float:right;" />
+        <h3>{{ wordset.title }}
+        <small><a href="{% url 'vocabulary:wordset-update' wordset.id %}"><i class="fa fa-edit small"></i></a>
+        <a href="{% url 'vocabulary:wordset-delete' wordset.id %}"><i class="fa fa-trash small"></i></a></small>
+        </h3>
+        <ul>{% for word_wordset in word_wordset_list %}
+            <li><a href="{% url 'vocabulary:word-detail' word_wordset.word.eng %}">
+                <strong>{{ word_wordset.word.eng }}</strong> <i>({{ word_wordset.word.level.level }}) - 
+                {{ word_wordset.word.ru1 }}
+                {% if word_wordset.word.ru2 %} / {{ word_wordset.word.ru2 }}{% endif %}</i></a>
+                - stage: {{ word_wordset.stage }}
+            </li>
+        {% endfor %}</ul>
+
+    </div>
+
+    {% include 'vocabulary/include/add_words_to_wordset.html' %}
+{% endblock %}

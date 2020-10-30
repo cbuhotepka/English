@@ -9,7 +9,7 @@ class Level(models.Model):
         return self.level
 
 class Word(models.Model):
-    word = models.CharField(max_length=128)
+    eng = models.CharField(max_length=128)
     ru1 = models.CharField(max_length=128, blank=True)
     ru2 = models.CharField(max_length=128, blank=True)
     
@@ -19,12 +19,12 @@ class Word(models.Model):
     audio = models.CharField(max_length=128, blank=True)
 
     def __str__(self):
-        return f"{self.word.upper()}:  {self.ru1} / {self.ru2}"
+        return f"{self.eng.upper()}:  {self.ru1} / {self.ru2}"
 
-class UserVocabulary(models.Model):
+class UserWordset(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=256)
-    word = models.ManyToManyField(Word, through='WordVocabulary')
+    words = models.ManyToManyField(Word, through='WordWordset')
     picture = models.CharField(max_length=128, default='__blank__.jpg')
     
     class Meta:
@@ -34,7 +34,7 @@ class UserVocabulary(models.Model):
         return f"{self.title} ({self.user.username})"
 
     def get_words_str(self):
-        words = [w.word for w in self.word.all()[:6]]
+        words = [w.eng for w in self.words.all()[:6]]
         # words = Word.objects.all()[:5]
         print('>>> WORDS:', words)
         if words and len(words)>0 :
@@ -47,13 +47,13 @@ class UserVocabulary(models.Model):
             return ''
     get_words_str.short_description = 'Words'
 
-class WordVocabulary(models.Model):
-    vocabulary = models.ForeignKey(UserVocabulary, on_delete=models.CASCADE)
+class WordWordset(models.Model):
+    wordset = models.ForeignKey(UserWordset, on_delete=models.CASCADE)
     word = models.ForeignKey(Word, on_delete=models.CASCADE)
     stage = models.PositiveIntegerField(default=0)
 
     class Meta:
-        unique_together = ('vocabulary', 'word')
+        unique_together = ('wordset', 'word')
 
     def __str__(self):
-        return f"{self.word.word} - {self.stage}"
+        return f"{self.word.eng} - {self.stage}"

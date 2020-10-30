@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="container mt-4 text-center">
-    <h3>Are you sure you want to delete <strong>{{ uservocabulary.title }}</strong> vocabulary?</h3>
+    <h3>Are you sure you want to delete <strong>{{ uservocabulary.title }}</strong> wordset?</h3>
 
     <form method="POST">
         {% csrf_token %}
         <div class="form-group mt-4">
             <input type="submit" value="Delete" class="btn btn-danger btn-lg"/>
-            <a href="{% url 'vocabulary:user-vocabulary-list' %}" class="ml-2 btn btn-info btn-lg">Cancel</a>
+            <a href="{% url 'vocabulary:user-wordset-list' %}" class="ml-2 btn btn-info btn-lg">Cancel</a>
         </div>
     </form>
     

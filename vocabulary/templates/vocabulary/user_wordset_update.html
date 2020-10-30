@@ -1,0 +1,35 @@
+{% extends 'base_menu.html' %}
+
+{% load static %}
+{% block content %}
+<div class="container mt-4" style="max-width: 480px;">
+    <form method="POST">{% csrf_token %}
+        <button type="submit" name="change_picture" class="btn btn-link text-secondary" style="float:right;"/>
+            <small><i class="fa fa-sync"></i></small> Change picture</button>
+    </form>
+    <h3>{{ object.title }}</h3>
+
+    <img src="{% static 'vocabulary/image/wordset/'|add:object.picture %}" style="width:100%; height:auto;" />
+    
+    <h4>Rename wordset</h4>
+    <form method="POST">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.errors }}
+                {% comment %} {{ field.label_tag }}  {% endcomment %}
+                {{ field }} 
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text|safe }}</small>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <input type="submit" value="Update" class="btn btn-success"/>
+        <a href="{% url 'vocabulary:user-wordset-list' %}" class="ml-2 btn btn-info">Back</a>
+    </form>
+</div>
+
+{% comment %} {% include 'vocabulary/include/add_words_to_wordset.html' %} {% endcomment %}
+{% endblock %}

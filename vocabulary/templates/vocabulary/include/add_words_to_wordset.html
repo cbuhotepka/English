@@ -1,0 +1,19 @@
+<div class="container mt-4" >
+    <button class="btn btn-link btn-block dropdown-toggle text-left border-0" 
+        style="color:black; padding:0; max-width:480px;" 
+        type="button" id="dropdownMenuButton" 
+        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <h4 style="display:inline;">Add words</h4>
+    </button>
+    <div class="dropdown-menu p-3 border-0" style="width:100%; max-width:480px;" aria-labelledby="dropdownMenuButton">
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <textarea class="form-control" name="new_words" rows="6"></textarea>
+            </div>
+
+            <input type="submit" value="Add words" class="btn btn-success"/>
+        </form>
+    </div>        
+</div>

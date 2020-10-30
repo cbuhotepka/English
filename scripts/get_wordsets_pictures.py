@@ -1,6 +1,6 @@
 # https://www.shutterstock.com/ru/search/phone?orientation=horizontal&image_type=photo
 
-from vocabulary.models import UserVocabulary
+from vocabulary.models import UserWordset
 import requests
 from time import sleep
 import re
@@ -21,16 +21,16 @@ HEADERS = {
 }
 
 def run():
-    PATH = 'vocabulary\\static\\vocabulary\\image\\vocab\\'
+    PATH = 'vocabulary\\static\\vocabulary\\image\\wordset\\'
     SRCH_HEAD = 'https://www.shutterstock.com/ru/search/'
     SRCH_TAIL = '?orientation=horizontal&image_type=photo'
     i=0
-    vocabulary_list = UserVocabulary.objects.filter(picture='__blank__.jpg')
-    count = len(vocabulary_list)
-    for vocabulary in vocabulary_list:
+    wordset_list = UserWordset.objects.filter(picture='__blank__.jpg')
+    count = len(wordset_list)
+    for wordset in wordset_list:
         robbed = False
         try:
-            url = SRCH_HEAD + vocabulary.title +SRCH_TAIL
+            url = SRCH_HEAD + wordset.title +SRCH_TAIL
             r = requests.get(url, headers=HEADERS)
             pics = re.findall(r"(https://image\.shutterstock\.com/.+?\.jpg)", r.content.decode())
             # print(r.content.decode()[:50])
@@ -42,19 +42,19 @@ def run():
                 if r_pic.status_code == 200:
                     break
             else:
-                print(f"--NO PICTURE: {vocabulary.title}")
+                print(f"--NO PICTURE: {wordset.title}")
 
-            print(f"{vocabulary.title}: {pic_url}")
+            print(f"{wordset.title}: {pic_url}")
             r_pic = requests.get(pic_url)
 
-            file_name = vocabulary.title.replace(' ', '_').lower() +'.jpg'
+            file_name = wordset.title.replace(' ', '_').lower() +'.jpg'
             with open(PATH + file_name, 'wb') as f:
                 f.write(r_pic.content)
-            vocabulary.picture = file_name
-            vocabulary.save()
+            wordset.picture = file_name
+            wordset.save()
             robbed = True
         except Exception as ex:
-            print(f"--ERROR: {ex} with {vocabulary.title}")
+            print(f"--ERROR: {ex} with {wordset.title}")
         i+=1
         if i % 20 ==0:
             print(f"{i} out of {count}")

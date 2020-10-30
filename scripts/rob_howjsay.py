@@ -13,16 +13,16 @@ def run():
         robbed = False
         try:
             # if not word.audio or word.audio==' ':
-            url = SRC + word.word +'.mp3'
+            url = SRC + word.eng +'.mp3'
             r = requests.get(url)
-            file_name = PATH + word.word +'.mp3'
+            file_name = PATH + word.eng +'.mp3'
             with open(file_name, 'wb') as f:
                 f.write(r.content)
-            word.audio = word.word + '.mp3'
+            word.audio = word.eng + '.mp3'
             word.save()
             robbed = True
         except Exception as ex:
-            print(f"--ERROR: {ex} with {word.word} {word.id}")
+            print(f"--ERROR: {ex} with {word.eng} {word.id}")
         i+=1
         if i % 20 ==0:
             print(f"{i} out of {count}")

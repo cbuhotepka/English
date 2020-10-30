@@ -1,12 +1,12 @@
 from django import forms
-from .models import UserVocabulary
+from .models import UserWordset
 
-class UserVocabularyForm(forms.ModelForm):
+class UserWordsetForm(forms.ModelForm):
     title = forms.CharField(
         label='Title',
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Write a title..', 'id': 'id_title'}),
     )
      
     class Meta:
-        model = UserVocabulary
+        model = UserWordset
         fields = ['title',]

@@ -6,9 +6,9 @@
         Add to
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ word.id }}">
-        {% for vocabulary in vocabulary_list %}
-            <a href="{% url 'vocabulary:vocabulary-add-word' vocabulary.id %}?w_id={{ word.id }}" class="dropdown-item" />
-                {{ vocabulary.title }}</a>
+        {% for wordset in wordset_list %}
+            <a href="{% url 'vocabulary:wordset-add-word' wordset.id %}?w_id={{ word.id }}" class="dropdown-item" />
+                {{ wordset.title }}</a>
         {% endfor %}
     </div>
 </div>

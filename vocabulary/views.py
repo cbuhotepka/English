@@ -5,8 +5,8 @@ from django.views.generic import View, CreateView, UpdateView, DeleteView
 from .views_owner import OwnerCreateView, OwnerDeleteView, OwnerUpdateView
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import UserVocabularyForm
-from .scripts.pictures import set_vocabulary_picture
+from .forms import UserWordsetForm
+from .scripts.pictures import set_wordset_picture
 from .scripts.helpers import smart_split
 
 # Create your views here.
@@ -17,7 +17,7 @@ class WordDetailView(View):
     template_name = 'vocabulary/word_detail.html'
 
     def get(self, request, word):
-        word_obj = get_object_or_404(Word, word=word)
+        word_obj = get_object_or_404(Word, eng=word)
         context = {'word':word_obj}
         return render(request, self.template_name, context)
 
@@ -46,7 +46,7 @@ class SearchView(View):
 
     def get(self, request):
         search = request.GET['search']
-        q = Q(word__icontains=search)
+        q = Q(eng__icontains=search)
         q.add(Q(ru1__icontains=search), Q.OR)
         q.add(Q(ru2__icontains=search), Q.OR)
         word_list = Word.objects.filter(q).select_related('level')
@@ -56,91 +56,94 @@ class SearchView(View):
 
 # ==================== VOCABULARY VIEWS ====================
 
-class UserVocabularyListView(LoginRequiredMixin, View):
-    template_name = 'vocabulary/user_vocabulary_list.html'
+class UserWordsetListView(LoginRequiredMixin, View):
+    template_name = 'vocabulary/user_wordset_list.html'
 
     def get(self, request):
-        vocabulary_list = UserVocabulary.objects.filter(user=request.user).prefetch_related('word')
-        context = {'vocabulary_list':vocabulary_list}
+        wordset_list = UserWordset.objects.filter(user=request.user).prefetch_related('words')
+        context = {'wordset_list':wordset_list}
         return render(request, self.template_name, context)
 
-class UserVocabularyDetailView(LoginRequiredMixin, View):
-    template_name = 'vocabulary/user_vocabulary_detail.html'
+class UserWordsetDetailView(LoginRequiredMixin, View):
+    template_name = 'vocabulary/user_wordset_detail.html'
 
     def get(self, request, pk):
-        vocabulary = get_object_or_404(UserVocabulary, pk=pk, user=request.user)
-        word_vocabulary_list = WordVocabulary.objects.filter(vocabulary=vocabulary).select_related('word')
-        context = {'vocabulary':vocabulary, 'word_vocabulary_list':word_vocabulary_list}
+        wordset = get_object_or_404(UserWordset, pk=pk, user=request.user)
+        word_wordset_list = WordWordset.objects.filter(wordset=wordset).select_related('word')
+        context = {'wordset':wordset, 'word_wordset_list':word_wordset_list}
         return render(request, self.template_name, context)
 
-class UserVocabularyCreateView(OwnerCreateView):
-    form_class = UserVocabularyForm
-    success_url = reverse_lazy('vocabulary:user-vocabulary-list')
-    template_name = 'vocabulary/user_vocabulary_create.html'
-
-    def form_valid(self, form):
-        vocabulary = form.save(commit=False)
-        vocabulary.user = self.request.user
-        vocabulary.save()
-        set_vocabulary_picture(vocabulary)
-        return super().form_valid(form)
-        
-class UserVocabularyUpdateView(OwnerUpdateView):
-    form_class = UserVocabularyForm
-    model = UserVocabulary
-    success_url = reverse_lazy('vocabulary:user-vocabulary-list')
-    template_name = 'vocabulary/user_vocabulary_update.html'
-
-    # def get(self, request, pk, *args, **kwargs):
-    #     self.object = get_object_or_404(UserVocabulary, pk=pk, user=self.request.user)
-    #     return super().get(request, *args, **kwargs)
-
     def post(self, request, pk):
-        vocabulary = get_object_or_404(UserVocabulary, pk=pk, user=self.request.user)
+        wordset = get_object_or_404(UserWordset, pk=pk, user=self.request.user)
 
-        if 'words' in request.POST:
+        if 'new_words' in request.POST:
             not_found = []
-            for word in smart_split(request.POST['words']):
+            for word in smart_split(request.POST['new_words']):
                 print('=== HERE IS NEW WORD:', word)
                 try:
-                    word = Word.objects.get(word=word)
-                    word_vocabulary, created = WordVocabulary.objects.get_or_create(vocabulary=vocabulary, word=word)
+                    word = Word.objects.get(eng=word)
+                    word_wordset, created = WordWordset.objects.get_or_create(wordset=wordset, word=word)
                 except Exception as ex:
                     print('--- EXCEPTION with:', word, ex)
                     not_found.append(word)
             print('--- NOT FOUND:', not_found)
-            return redirect(self.success_url)
+            return redirect(request.path)
 
-        elif 'change_picture' in request.POST:
-            set_vocabulary_picture(vocabulary)
+class UserWordsetCreateView(OwnerCreateView):
+    form_class = UserWordsetForm
+    success_url = reverse_lazy('vocabulary:user-wordset-list')
+    template_name = 'vocabulary/user_wordset_create.html'
+
+    def form_valid(self, form):
+        wordset = form.save(commit=False)
+        wordset.user = self.request.user
+        wordset.save()
+        set_wordset_picture(wordset)
+        return super().form_valid(form)
+        
+class UserWordsetUpdateView(OwnerUpdateView):
+    form_class = UserWordsetForm
+    model = UserWordset
+    success_url = reverse_lazy('vocabulary:user-wordset-list')
+    template_name = 'vocabulary/user_wordset_update.html'
+
+    # def get(self, request, pk, *args, **kwargs):
+    #     self.object = get_object_or_404(UserWordset, pk=pk, user=self.request.user)
+    #     return super().get(request, *args, **kwargs)
+
+    def post(self, request, pk):
+        wordset = get_object_or_404(UserWordset, pk=pk, user=self.request.user)
+
+        if 'change_picture' in request.POST:
+            set_wordset_picture(wordset)
             return redirect(self.request.path)
 
-        form = self.form_class(request.POST, instance=vocabulary)
+        form = self.form_class(request.POST, instance=wordset)
         if not form.is_valid():
             context = {'form':form}
             return render(request, self.template_name, context)
 
-        vocabulary = form.save(commit=False)
-        vocabulary.save()
+        wordset = form.save(commit=False)
+        wordset.save()
         return redirect(self.success_url)
 
-class UserVocabularyDeleteView(OwnerDeleteView):
-    model = UserVocabulary
-    success_url = reverse_lazy('vocabulary:user-vocabulary-list')
-    template_name = 'vocabulary/user_vocabulary_delete.html'
+class UserWordsetDeleteView(OwnerDeleteView):
+    model = UserWordset
+    success_url = reverse_lazy('vocabulary:user-wordset-list')
+    template_name = 'vocabulary/user_wordset_delete.html'
 
     # def post(self, request, *args, **kwargs):
-    #     self.object = get_object_or_404(UserVocabulary, pk=kwargs['pk'], user=self.request.user)
+    #     self.object = get_object_or_404(UserWordset, pk=kwargs['pk'], user=self.request.user)
     #     return self.delete(request, *args, **kwargs)
 
-def UserVocabularyAddWord(request, pk):
+def UserWordsetAddWord(request, pk):
     w_id = request.GET['w_id']
     v_id = pk
     word = get_object_or_404(Word, pk=w_id)
-    vocabulary = get_object_or_404(UserVocabulary, pk=v_id, user=request.user)
-    word_vocabulary, created = WordVocabulary.objects.get_or_create(vocabulary=vocabulary, word=word)
+    wordset = get_object_or_404(UserWordset, pk=v_id, user=request.user)
+    word_wordset, created = WordWordset.objects.get_or_create(wordset=wordset, word=word)
     try:
         success_url = request.META['HTTP_REFERER']
     except:
-        success_url = reverse('vocabulary:user-vocabulary-detail')
+        success_url = reverse('vocabulary:user-wordset-detail')
     return redirect(success_url)

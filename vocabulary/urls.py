@@ -7,12 +7,12 @@ urlpatterns = [
     path('level/<str:lvl>', views.LevelView.as_view(), name='level'),
     path('search', views.SearchView.as_view(), name='search'),
 
-    path('user_vocabularies', views.UserVocabularyListView.as_view(), name='user-vocabulary-list'),
-    path('user_vocabulary/<int:pk>', views.UserVocabularyDetailView.as_view(), name='user-vocabulary-detail'),
-    path('user_vocabulary/<int:pk>/word_add', views.UserVocabularyAddWord, name='vocabulary-add-word'),
-    path('user_vocabulary/create', views.UserVocabularyCreateView.as_view(), name='vocabulary-create'),
-    path('user_vocabulary/<int:pk>/update', views.UserVocabularyUpdateView.as_view(), name='vocabulary-update'),
-    path('user_vocabulary/<int:pk>/delete', views.UserVocabularyDeleteView.as_view(), name='vocabulary-delete'),
+    path('user_wordsets', views.UserWordsetListView.as_view(), name='user-wordset-list'),
+    path('user_wordset/<int:pk>', views.UserWordsetDetailView.as_view(), name='user-wordset-detail'),
+    path('user_wordset/<int:pk>/word_add', views.UserWordsetAddWord, name='wordset-add-word'),
+    path('user_wordset/create', views.UserWordsetCreateView.as_view(), name='wordset-create'),
+    path('user_wordset/<int:pk>/update', views.UserWordsetUpdateView.as_view(), name='wordset-update'),
+    path('user_wordset/<int:pk>/delete', views.UserWordsetDeleteView.as_view(), name='wordset-delete'),
 
     path('word/<str:word>', views.WordDetailView.as_view(), name='word-detail'),
 ]

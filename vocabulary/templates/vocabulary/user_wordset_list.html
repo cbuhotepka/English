@@ -3,7 +3,7 @@
 {% load static %}
 {% block content %}
     <div class="container mt-4">
-        <h3>Your vocabularies:</h3>
+        <h3>Your wordsets:</h3>
 
         <div class="row row-cols-1 row-cols-md-4">
             <style>
@@ -11,39 +11,41 @@
                 .card-img-top {width: 100%; height: auto; object-fit: cover;}
             </style>
 
-            {% for vocabulary in vocabulary_list %}
+            {% for wordset in wordset_list %}
             <div class="col mb-0" style="padding: 4px;">     
                 <div class="card h-100" onmouseover="this.style.cursor='pointer'"
-                    onclick="window.location='{% url 'vocabulary:user-vocabulary-detail' vocabulary.id %}'">
+                    onclick="window.location='{% url 'vocabulary:user-wordset-detail' wordset.id %}'">
                     <div class="bg-secondary" style=
-                        "background-image: url('{% static 'vocabulary/image/vocab/'|add:vocabulary.picture %}'); 
+                        "background-image: url('{% static 'vocabulary/image/wordset/'|add:wordset.picture %}'); 
                         height:200px; 
                         background-position:top;
                         background-size:auto 212px;">
                     </div>
-                    {% comment %} <img class="card-img-top" src="" width="100%" height=auto /> {% endcomment %}
+
                     <div class="card-body">
-                        <h5 class="card-title">{{ vocabulary.title }}</h5>
+                        <h5 class="card-title">{{ wordset.title }}</h5>
                         <p class="card-text">{{ product.get_sex_display }}
-                            <i>({{ vocabulary.get_words_str }})</i>
-                            {{ vocabulary.word_set.all }}</a>
+                            <i>({{ wordset.get_words_str }})</i>
+                            {{ wordset.word_set.all }}</a>
                         </p>
                         
-                        <a class="btn btn-outline-info btn-sm" href="{% url 'vocabulary:vocabulary-update' vocabulary.id %}"><i class="fa fa-edit"></i></a>
-                        <a class="btn btn-outline-info btn-sm" href="{% url 'vocabulary:vocabulary-delete' vocabulary.id %}"><i class="fa fa-trash"></i></a>                        
+                        <a class="btn btn-outline-info btn-sm" href="{% url 'vocabulary:wordset-update' wordset.id %}"><i class="fa fa-edit"></i></a>
+                        <a class="btn btn-outline-info btn-sm" href="{% url 'vocabulary:wordset-delete' wordset.id %}"><i class="fa fa-trash"></i></a>                        
                     </div>
                 </div>
             </div>
             {% endfor %}
+
+            
             <div class="col mb-0" style="padding: 4px;">
                 <div class="card h-100 bg-success text-white text-center" 
-                    onclick="window.location='{% url 'vocabulary:vocabulary-create' %}'"
+                    onclick="window.location='{% url 'vocabulary:wordset-create' %}'"
                     onmouseover="style='cursor: pointer;'">
                     <div class="container h-100">
                         <div class="row align-items-center h-100">
                             <div class="col">
                                 <h4 class="mt-4 mb-3"><i class="fa fa-plus"></i></br>
-                                    Add dictionary</h4>
+                                    Add wordset</h4>
                             </div>
                         </div>
                     </div>

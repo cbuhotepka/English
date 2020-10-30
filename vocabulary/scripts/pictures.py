@@ -1,6 +1,6 @@
 # https://www.shutterstock.com/ru/search/phone?orientation=horizontal&image_type=photo
 
-from vocabulary.models import UserVocabulary
+from vocabulary.models import UserWordset
 import requests
 from time import sleep
 import re
@@ -19,33 +19,33 @@ HEADERS = {
         'sec-fetch-site': 'cross-site',
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
     }
-PATH = 'vocabulary\\static\\vocabulary\\image\\vocab\\'
+PATH = 'vocabulary\\static\\vocabulary\\image\\wordset\\'
 SRCH_HEAD = 'https://www.shutterstock.com/ru/search/'
 SRCH_TAIL = '?orientation=horizontal&image_type=photo'
 
-def set_vocabulary_picture(vocabulary):
+def set_wordset_picture(wordset):
     i=0
     try:
-        url = SRCH_HEAD + vocabulary.title +SRCH_TAIL
+        url = SRCH_HEAD + wordset.title +SRCH_TAIL
         r = requests.get(url, headers=HEADERS)
         pics = re.findall(r"(https://image\.shutterstock\.com/.+?\.jpg)", r.content.decode())
         # print(r.content.decode()[:50])
-        pics = pics[:20]
+        # pics = pics[:20]
         for i in range(20):
             pic_url = choice(pics)
-            print(f"{vocabulary.title}: {pic_url}")
+            print(f"{wordset.title}: {pic_url}")
             r_pic = requests.get(pic_url)
             if r_pic.status_code == 200:
                 break
         else:
-            print(f"--NO PICTURE: {ex} with {vocabulary.title}")
+            print(f"--NO PICTURE: {ex} with {wordset.title}")
 
-        file_name = vocabulary.title.replace(' ', '_').lower() +'.jpg'
+        file_name = wordset.title.replace(' ', '_').lower() +'.jpg'
         with open(PATH + file_name, 'wb') as f:
             f.write(r_pic.content)
-        vocabulary.picture = file_name
-        vocabulary.save()
+        wordset.picture = file_name
+        wordset.save()
         robbed = True
     except Exception as ex:
-        print(f"--ERROR: {ex} with {vocabulary.title}")
+        print(f"--ERROR: {ex} with {wordset.title}")
     

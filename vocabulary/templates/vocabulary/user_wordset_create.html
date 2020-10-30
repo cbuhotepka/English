@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="container mt-4 text-center" style="max-width: 480px;">
-        <h3>New vocabulary</h3>
+        <h3>New wordset</h3>
 
         <form method="POST">
             {% csrf_token %}
@@ -10,7 +10,7 @@
             {% for field in form %}
                 <div class="form-group">
                     {{ field.errors }}
-                    {{ field.label_tag }} {{ field }} 
+                    {{ field.label_tag }} {{ field }}
                     {% if field.help_text %}
                         <small class="form-text text-muted">{{ field.help_text|safe }}</small>
                     {% endif %}
@@ -18,7 +18,7 @@
             {% endfor %}
 
             <input type="submit" value="Create" class="btn btn-success"/>
-            <a href="{% url 'vocabulary:user-vocabulary-list' %}" class="ml-2 btn btn-info">Cancel</a>
+            <a href="{% url 'vocabulary:user-wordset-list' %}" class="ml-2 btn btn-info">Cancel</a>
         </form>
         
     </div>

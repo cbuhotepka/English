@@ -31,7 +31,7 @@ def run():
     for word in word_list:
         robbed = False
         try:
-            srch = word.word if ' ' not in word.word else word.word.split()[0]
+            srch = word.eng if ' ' not in word.eng else word.eng.split()[0]
             url = SRCH_HEAD + srch + SRCH_TAIL
 
             r = requests.get(url, headers=HEADERS)
@@ -43,12 +43,12 @@ def run():
                 if r_pic.status_code == 200:
                     break
             else:
-                print(f"--NO PICTURE: {word.word}")
+                print(f"--NO PICTURE: {word.eng}")
                 continue
 
-            # print(f"{word.word}: {pic_url}")
+            # print(f"{word.eng}: {pic_url}")
 
-            file_name = word.word.replace(' ', '_').lower() +'.jpg'
+            file_name = word.eng.replace(' ', '_').lower() +'.jpg'
             with open(PATH + file_name, 'wb') as f:
                 f.write(r_pic.content)
             word.picture = file_name
@@ -56,7 +56,7 @@ def run():
             robbed = True
 
         except Exception as ex:
-            print(f"--ERROR: {ex} with {word.word}")
+            print(f"--ERROR: {ex} with {word.eng}")
         
         i+=1
         if i % 20 == 0:
