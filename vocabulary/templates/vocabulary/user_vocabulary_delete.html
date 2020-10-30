@@ -1,15 +1,16 @@
 {% extends 'base_menu.html' %}
 
 {% block content %}
-    <div class="container mt-4">
+<div class="container mt-4 text-center">
     <h3>Are you sure you want to delete <strong>{{ uservocabulary.title }}</strong> vocabulary?</h3>
 
     <form method="POST">
         {% csrf_token %}
-
-        <input type="submit" value="Delete" class="btn btn-danger"/>
-        <a href="{% url 'vocabulary:user-vocabulary-list' %}" class="ml-2 btn btn-info">Cancel</a>
+        <div class="form-group mt-4">
+            <input type="submit" value="Delete" class="btn btn-danger btn-lg"/>
+            <a href="{% url 'vocabulary:user-vocabulary-list' %}" class="ml-2 btn btn-info btn-lg">Cancel</a>
+        </div>
     </form>
     
-    </div>
+</div>
 {% endblock %}

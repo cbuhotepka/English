@@ -13,7 +13,8 @@
 
             {% for vocabulary in vocabulary_list %}
             <div class="col mb-0" style="padding: 4px;">     
-                <div class="card h-100" onclick="window.location='{% url 'vocabulary:user-vocabulary-detail' vocabulary.id %}'">
+                <div class="card h-100" onmouseover="this.style.cursor='pointer'"
+                    onclick="window.location='{% url 'vocabulary:user-vocabulary-detail' vocabulary.id %}'">
                     <div class="bg-secondary" style=
                         "background-image: url('{% static 'vocabulary/image/vocab/'|add:vocabulary.picture %}'); 
                         height:200px; 

@@ -113,7 +113,7 @@ class UserVocabularyUpdateView(OwnerUpdateView):
 
         elif 'change_picture' in request.POST:
             set_vocabulary_picture(vocabulary)
-            return redirect(self.success_url)
+            return redirect(self.request.path)
 
         form = self.form_class(request.POST, instance=vocabulary)
         if not form.is_valid():
