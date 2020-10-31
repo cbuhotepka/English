@@ -1,0 +1,36 @@
+{% load mathfilters %}
+
+<span class="text-success">
+    {% with ''|center:word_wordset.stage as range %}
+        {% for _ in range %}
+            |
+        {% endfor %}
+    {% endwith %}
+</span>
+<span style="color:#ddd;">
+{% with 5|sub:word_wordset.stage as dull %}
+    {% with ''|center:dull as range %}
+        {% for _ in range %}
+            |
+        {% endfor %}
+    {% endwith %}
+{% endwith %}
+</span>
+
+{% comment %} <span class="text-success small">
+
+    {% with ''|center:word_wordset.stage as range %}
+        {% for _ in range %}
+            <i class="fas fa-circle small"></i>
+        {% endfor %}
+    {% endwith %}
+
+{% with 5|sub:word_wordset.stage as dull %}
+    {% with ''|center:dull as range %}
+        {% for _ in range %}
+            <i class="far fa-circle small"></i>
+        {% endfor %}
+    {% endwith %}
+{% endwith %}
+
+</span> {% endcomment %}

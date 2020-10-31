@@ -5,16 +5,21 @@
 
     <div class="container mt-4">
         <img src="{% static 'vocabulary/image/wordset/'|add:wordset.picture %}" style="max-width:400px; float:right;" />
+
         <h3>{{ wordset.title }}
-        <small><a href="{% url 'vocabulary:wordset-update' wordset.id %}"><i class="fa fa-edit small"></i></a>
-        <a href="{% url 'vocabulary:wordset-delete' wordset.id %}"><i class="fa fa-trash small"></i></a></small>
+        <small><a style="color:#17a2b8;" href="{% url 'vocabulary:wordset-update' wordset.id %}">
+            <i class="fa fa-edit small"></i></a>
+        <a style="color:#17a2b8;" href="{% url 'vocabulary:wordset-delete' wordset.id %}">
+            <i class="fa fa-trash small"></i></a></small>
         </h3>
-        <ul>{% for word_wordset in word_wordset_list %}
-            <li><a href="{% url 'vocabulary:word-detail' word_wordset.word.eng %}">
+
+        <ul class="list-unstyled">{% for word_wordset in word_wordset_list %}
+            <li><a class="btn btn-outline-info pt-1 pb-1 mt-1" href="{% url 'vocabulary:word-detail' word_wordset.word.eng %}">
                 <strong>{{ word_wordset.word.eng }}</strong> <i>({{ word_wordset.word.level.level }}) - 
                 {{ word_wordset.word.ru1 }}
                 {% if word_wordset.word.ru2 %} / {{ word_wordset.word.ru2 }}{% endif %}</i></a>
-                - stage: {{ word_wordset.stage }}
+                {% comment %} - stage: {{ word_wordset.stage }}  {% endcomment %}
+                {% include "vocabulary/include/word_stage.html" %}
             </li>
         {% endfor %}</ul>
 

@@ -3,8 +3,8 @@
     {% user_wordset_list user as wordset_list %}
 {% endif %}
 
-<ul>{% for word in word_list %}
-    <li><a href="{% url 'vocabulary:word-detail' word.eng %}">
+<ul class="list-unstyled">{% for word in word_list %}
+    <li><a class="btn btn-outline-info pt-1 pb-1 mt-1" href="{% url 'vocabulary:word-detail' word.eng %}">
         <strong>{{ word.eng }}</strong> <i>({{ word.level.level }}) - 
         {{ word.ru1 }}{% if word.ru2 %} / {{ word.ru2 }}{% endif %}</i></a>
     
